@@ -5,15 +5,12 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+// Writes a message to the user to indicate that the shell is running
 void initialize(){
-  char cwd[1024];
-  getcwd(cwd, sizeof(cwd));
-  if (errno){
-    printf("Error %d: %s\n", errno, strerror(errno));
-  }
-  printf("\n\nWelcome to DummyShell! Type 'exit' to quit the shell.\n\ndummy %s$ ", cwd);
+  printf("\n\nWelcome to DummyShell! Type 'exit' to quit the shell.\n\n");
 }
 
+// Parses a line of code and splits it into valid commands
 char ** parse_args(char *line){
   char **store = malloc(256);
   int i = 0;
@@ -24,15 +21,21 @@ char ** parse_args(char *line){
   return store;
 }
 
+// Reads in the command line and returns the parsed version of it
 char ** reading(){
   char *line = malloc(256);
-  printf("Please enter a command: ");
+  char cwd[1024];
+  getcwd(cwd, sizeof(cwd));
+  if (errno){
+    printf("Error %d: %s\n", errno, strerror(errno));
+  }
+  printf("(dummy)%s$ ", cwd);
   fgets(line, 50, stdin);
   *(strchr(line, '\n')) = '\0'; //get rid of ending
-  char * args = malloc(256);
   return parse_args(line);
 }
 
+// Runs commands in the shell
 void execute(char **args){
   if (fork() == 0){
     execvp(args[0], args);
