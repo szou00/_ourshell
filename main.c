@@ -12,11 +12,16 @@ int main(int argc, char *argv[]){
   initialize();
   printf("\n");
   while(1){
-    char ** command = reading();
-    if (strcmp(command[0], "exit") == 0) {
+    char ** commands = reading();
+    if (strcmp(commands[0], "exit") == 0) {
       exit(0);
     }
-    execvp(command[0], command);
+    if (strcmp(commands[0], "cd") == 0){
+      chdir(commands[1]);
+    }
+    else{
+      execute(commands);
+    }
   }
   // printf("Testing parse_args for 'ls -a -l'\n");
   // char *line = malloc(256);

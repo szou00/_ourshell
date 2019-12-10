@@ -11,7 +11,7 @@ void initialize(){
   if (errno){
     printf("Error %d: %s\n", errno, strerror(errno));
   }
-  printf("Welcome to DummyShell! Type 'exit' to quit the shell.\ndummy %s$ ", cwd);
+  printf("\n\nWelcome to DummyShell! Type 'exit' to quit the shell.\n\ndummy %s$ ", cwd);
 }
 
 char ** parse_args(char *line){
@@ -25,15 +25,19 @@ char ** parse_args(char *line){
 }
 
 char ** reading(){
-  char line[100];
-  char *l = line;
+  char *line = malloc(256);
   printf("Please enter a command: ");
-  fgets(l, 50, stdin);
-  *(strchr(l, '\n')) = '\0'; //get rid of ending
-  printf("Your command: %s\n\n", l);
-  return parse_args(l);
+  fgets(line, 50, stdin);
+  *(strchr(line, '\n')) = '\0'; //get rid of ending
+  char * args = malloc(256);
+  return parse_args(line);
 }
 
 void execute(char **args){
-  execvp()
+  if (fork() == 0){
+    execvp(args[0], args);
+  }
+  else{
+    wait(NULL);
+  }
 }
