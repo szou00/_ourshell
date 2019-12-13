@@ -77,28 +77,45 @@ char ** reading(){
 }
 
 // Runs commands in the shell
-void execute(char **args){
-  if (fork() == 0){
-    execvp(args[0], args);
+int execute(char **args){
+  int f, p, status;
+  f = fork();
+
+  if (f){
+    // wait(NULL);
+    p = wait(&status);
+    printf("---waited\n");
   }
   else{
-    wait(NULL);
+    printf("---execing\n");
+    execvp(args[0], args);
   }
-}
-
-int redirectout(char **input, int pos){ //"<"
-  // fflush(0);
-  // printf("file name %s\n", input[pos + 1]); //for testing purposes
-  int fd1 = creat(input[pos + 1], 0644);
-  input[pos] = NULL; //so the program won't say can't be found
-  dup(STDIN_FILENO);
-  dup2(fd1, STDOUT_FILENO);
-  execvp(input[0], input);
-  close(fd1);
   return 0;
 }
 
-int redirectin(char **input, int pos) { //">"
+int redirectout(char **input, int pos){ //">"
+  // fflush(0);
+  // if (fork() == 0) {
+    printf("file name %s\n", input[pos + 1]); //for testing purposes
+    int fd1 = creat(input[pos + 1], 0644);
+    input[pos] = NULL; //so the program won't say can't be found
+    dup(STDOUT_FILENO);
+    printf("----duping\n");
+    dup2(fd1, STDOUT_FILENO); // this line is the one giving the errors?
+    printf("----duped2\n"x);
+    // execute(input);
+    execvp(input[0], input);
+    printf("----exited\n");
+    close(fd1);
+  // }
+  // else {
+    // wait(NULL);
+  // }
+  // char ** args = parse_args(*input);
+  return 0;
+}
+
+int redirectin(char **input, int pos) { //"<"
   // fflush(0);
   // printf("file name %s\n", input[pos + 1]);
   int fd1 = open(input[pos + 1], O_RDONLY);
@@ -108,6 +125,7 @@ int redirectin(char **input, int pos) { //">"
   dup2(fd1, STDIN_FILENO);
   close(fd1);
   execvp(input[0], input);
+  close(fd1);
   return 0;
 }
 
@@ -124,6 +142,3 @@ void piping(char **input, int pos) { //doesn't really work yet
   pclose(in);
   pclose(out);
 }
-// int redirect_type(char * command){
-//
-// }
