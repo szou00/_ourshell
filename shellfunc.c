@@ -86,44 +86,39 @@ void execute(char **args){
   }
 }
 
-int redirectout(char **input, int pos){ //"<"
-  // fflush(0);
-  // printf("file name %s\n", input[pos + 1]); //for testing purposes
+void redirectout(char **input, int pos){
   int fd1 = creat(input[pos + 1], 0644);
-  input[pos] = NULL; //so the program won't say can't be found
-  dup(STDIN_FILENO);
-  dup2(fd1, STDOUT_FILENO);
-  execvp(input[0], input);
-  close(fd1);
-  return 0;
-}
-
-int redirectin(char **input, int pos) { //">"
-  // fflush(0);
-  // printf("file name %s\n", input[pos + 1]);
-  int fd1 = open(input[pos + 1], O_RDONLY);
   input[pos] = NULL;
-  int i = 0;
-  dup(STDIN_FILENO);
-  dup2(fd1, STDIN_FILENO);
-  close(fd1);
-  execvp(input[0], input);
-  return 0;
-}
-
-void piping(char **input, int pos) { //doesn't really work yet
-  FILE *in = popen(input[pos], "r");
-  printf("file name %s\n", input[pos]);
-  FILE *out = popen(input[pos+2], "w");
-  printf("file name %s\n", input[pos + 2]);
-  input[pos] = NULL;
-  char line[200];
-  while (fgets(line, 200, in)) {
-    fputs(line, out);
+  if (fork() == 0){
+    dup2(fd1, STDOUT_FILENO);
+    execvp(input[0], input);
+    close(fd1);
   }
-  pclose(in);
-  pclose(out);
+  else{
+    wait(NULL);
+  }
 }
-// int redirect_type(char * command){
-//
-// }
+
+void redirectin(char **input, int pos){
+  int fd0 = open(input[pos + 1], O_RDONLY, 0);
+  printf("%s\n", fd0);
+  int i = 0;
+  char **source = malloc(256);
+  while (i != pos){
+    source[i] = input[i];
+    i++;
+  }
+  if (fork() == 0){
+    dup2(fd0, STDIN_FILENO);
+    close(fd0);
+    execvp(source[0], source);
+  }
+  else{
+    wait(NULL);
+  }
+  // dup2(fd1, 1);
+  // printf("%d\n", a);
+  // execute(source);
+  // printf("hello\n");
+  // close(fd1);
+}
