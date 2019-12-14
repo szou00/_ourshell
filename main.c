@@ -28,20 +28,18 @@ int main(int argc, char *argv[]){
       while (k != m){
           if (strcmp(com[k], ">") == 0) {
               if (redirectout(com, k)) {
-                return 0;
+                break;
               }
           }
           else if (strcmp(com[k], "<") == 0) {
             if (redirectin(com, k)) {
-              return 0;
+              break;
             }
           }
           else if (strcmp(com[k], "|") == 0) {
             piping(com, k);
           }
-          else {
-            k++;
-          }
+          k++;
       }
       if (k == m){
         if (strcmp(com[0], "exit") == 0) {
