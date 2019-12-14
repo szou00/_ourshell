@@ -2,14 +2,16 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
-#include <sys/wait.h>
 #include <unistd.h>
 #include "funcheaders.h"
 #include <fcntl.h>
+#include <sys/wait.h>
+#include <signal.h>
 
 
 
 int main(int argc, char *argv[]){
+  int status;
   initialize();
   printf("\n");
   while(1){
@@ -24,6 +26,7 @@ int main(int argc, char *argv[]){
       }
       m--;
       while (k != m){
+<<<<<<< HEAD
         if (strcmp(com[k], ">") == 0){
           redirectout(com, k);
           break;
@@ -33,6 +36,24 @@ int main(int argc, char *argv[]){
           break;
         }
         k++;
+=======
+          if (strcmp(com[k], ">") == 0) {
+              if (redirectout(com, k)) {
+                return 0;
+              }
+          }
+          else if (strcmp(com[k], "<") == 0) {
+            if (redirectin(com, k)) {
+              return 0;
+            }
+          }
+          else if (strcmp(com[k], "|") == 0) {
+            piping(com, k);
+          }
+          else {
+            k++;
+          }
+>>>>>>> f3bc852b734632e3fbc098163676384be59d242f
       }
       if (k == m){
         if (strcmp(com[0], "exit") == 0) {
