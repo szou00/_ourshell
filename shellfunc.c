@@ -98,7 +98,7 @@ int redirectout(char **input, int pos){ //">"
     int fd1 = creat(input[pos + 1], 0644);
     input[pos] = NULL; //so the program won't say can't be found
     if (fork() == 0) {
-      dup2(fd1, STDOUT_FILENO); // this line is the one giving the errors?
+      dup2(fd1, STDOUT_FILENO);
       execvp(input[0], input);
       close(fd1);
     }
@@ -114,21 +114,108 @@ int redirectin(char **input, int pos) { //"<"
   input[pos] = NULL;
   int i = 0;
 
-  dup2(fd1, STDIN_FILENO);
-  close(fd1);
-  execvp(input[0], input);
-  close(fd1);
-  return 1;
+  if (fork() == 0) {
+    dup2(fd1, STDIN_FILENO);
+    execvp(input[0], input);
+    close(fd1);
+  }
+  else {
+    wait(NULL);
+  }
+return 1;
 }
 
-void piping(char **input, int pos) { //doesn't really work yet
-  FILE *in = popen(input[pos], "r");
-  // printf("file name %s\n", input[pos]);
-  FILE *out = popen(input[pos+2], "w");
-  // printf("file name %s\n", input[pos + 2]);
+void piping(char **input, int pos) {
+
+  // int fds[2];
+  // pipe(fds);
+
+  // int i = 0;
+  // char * blank = " ";
+  // char command1[200] ="";
+  // for (i = 0; i < pos; i++) {
+  //   strcat(command1, input[i]);
+  //   strcat(command1, blank);
+  // }
+  // char ** com_1 = parse_args(command1);
+  // printf("command 1: %s\n", command1);
+
+  // for (i = 0; i < pos; i++) {
+  //   strcat(command1, input[i]);
+  //   strcat(command1, blank);
+  //   printf("command 1: %s\n", command1);
+  // }
+  char * command1;
+  char * command2;
+
+  command1 = input[pos-1];
+  command2 = input[pos+1];
+
+  char ** com_1 = parse_args(command1);
+  char ** com_2 = parse_args(command2);
+
+  // printf("command 1: %s\n", command1);
+  // printf("command 2: %s\n", command2);
+
   input[pos] = NULL;
+  char command[200];
   char line[200];
-  while (fgets(line, 200, in)) {
-    fputs(line, out);
+
+  FILE *in = popen(*com_1, "r");
+  while (fgets(line,256,in)) {
+      line[sizeof(line)-1] = 0;
+      strcat(command,line);
   }
+  pclose(in);
+  FILE *out = popen(*com_2,"w");
+  fprintf(out,"%s",command);
+  pclose(out);
+
+
+  // if (fork() == 0) {
+  //
+  //   dup(0);
+  //   dup2(fds[1], STDOUT_FILENO);
+  //   printf("command: %s\n", command1);
+  //   while (read(fds[0], line, sizeof(line))) {
+  //     printf("read: [%s]\n", line);
+  //   }
+  //   if (execvp(com_1[0], com_1) == -1) {
+	// 		exit(-1);
+  //   }
+  //   close(fds[1]);
+  // }
+  //
+  // else {
+  //
+  //   dup(0);
+  //     dup2(fds[0], STDIN_FILENO);
+  //     close(fds[0]);
+  //     if (execvp(com_2[0], com_2) == -1) {
+  // 			exit(-1);
+  //     }
+  //
+  //
+  //   wait(NULL);
+  // }
+
+
+  // while (fgets(line, 200, in)) {
+  //   fputs(line, out);
+  // }
+  //
+  // f = fork();
+  // if (f) {
+  //   close(fds[WRITE]);
+  //   printf("waiting for data from child\n");
+  //   read(fds[0], line, sizeof(line));
+  //   printf("parent read: [%s]\n", line);
+  // }
+  // else {
+  //   close(fds[READ]);
+  //   sleep(3);
+  //   write(fds[1], "hello!", 7);
+  // }
+
+
 }

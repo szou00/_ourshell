@@ -37,6 +37,7 @@ int main(int argc, char *argv[]){
             }
           }
           else if (strcmp(com[k], "|") == 0) {
+            // printf("pipe arguments: %s\n", com[k]);
             piping(com, k);
           }
           k++;
