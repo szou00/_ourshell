@@ -200,22 +200,5 @@ void piping(char **input, int pos) {
   // }
 
 
-  // while (fgets(line, 200, in)) {
-  //   fputs(line, out);
-  // }
-  //
-  // f = fork();
-  // if (f) {
-  //   close(fds[WRITE]);
-  //   printf("waiting for data from child\n");
-  //   read(fds[0], line, sizeof(line));
-  //   printf("parent read: [%s]\n", line);
-  // }
-  // else {
-  //   close(fds[READ]);
-  //   sleep(3);
-  //   write(fds[1], "hello!", 7);
-  // }
-
 
 }
