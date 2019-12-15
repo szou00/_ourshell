@@ -105,7 +105,7 @@ int redirectout(char **input, int pos){ //">"
     else {
       wait(NULL);
     }
-  return                                         1;
+  return 1;
 }
 
 int redirectin(char **input, int pos) { //"<"
@@ -131,6 +131,4 @@ void piping(char **input, int pos) { //doesn't really work yet
   while (fgets(line, 200, in)) {
     fputs(line, out);
   }
-  pclose(in);
-  pclose(out);
 }
