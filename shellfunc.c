@@ -19,19 +19,6 @@ char ** parse_args(char *line){
     store[i] = strsep(&line, " ");
     i++;
   }
-  // char **new = malloc(256);
-  // int j = 0;
-  // int k = 0;
-  // int m = sizeof(store);
-  // while (j != i){
-  //   if (strcmp(store[j], " ") != 0){
-  //     new[k] = store[j];
-  //     k++;
-  //   }
-  //   j++;
-  // }
-  // printf("%s\n", new[2]);
-  // store = new;
   return store;
 }
 
@@ -95,12 +82,28 @@ int execute(char **args){
 
 int redirectout(char **input, int pos){ //">"
 
-    int fd1 = creat(input[pos + 1], 0644);
+    // char ** input;
+    // int i = 0;
+    // for (i; arg[i] != '\0'; i++) {
+    //   input
+    // }
+
+    int fd1 = open(input[pos + 1], O_CREAT | O_WRONLY, 0644);
     input[pos] = NULL; //so the program won't say can't be found
     if (fork() == 0) {
+      dup(STDOUT_FILENO);
       dup2(fd1, STDOUT_FILENO);
+
+      if (execvp(input[0], input) == -1){
+        printf("%s\n", strerror(errno));
+      }
+      if(fd1 == -1){
+        printf("error: %s\n", strerror(errno));
+      }
+
       execvp(input[0], input);
       close(fd1);
+
     }
     else {
       wait(NULL);
@@ -112,7 +115,6 @@ int redirectin(char **input, int pos) { //"<"
 
   int fd1 = open(input[pos + 1], O_RDONLY);
   input[pos] = NULL;
-  int i = 0;
 
   if (fork() == 0) {
     dup2(fd1, STDIN_FILENO);
