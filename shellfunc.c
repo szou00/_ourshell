@@ -54,9 +54,9 @@ char ** reading(){
   char *line = malloc(256);
   char cwd[1024];
   getcwd(cwd, sizeof(cwd));
-  if (errno){
-    printf("Error %d: %s\n", errno, strerror(errno));
-  }
+  // if (errno){
+  //   printf("Error! %d: %s\n", errno, strerror(errno));
+  // }
   printf("(dummy)%s$ ", cwd);
   fgets(line, 50, stdin);
   *(strchr(line, '\n')) = '\0'; //get rid of ending
@@ -75,7 +75,9 @@ int execute(char **args){
   }
   else{
     // printf("---execing\n");
-    execvp(args[0], args);
+    if (execvp(args[0], args) == -1){
+      printf("Error: %s\n", strerror(errno));
+    }
   }
   return 0;
 }
@@ -98,7 +100,7 @@ int redirectout(char **input, int pos){ //">"
         printf("%s\n", strerror(errno));
       }
       if(fd1 == -1){
-        printf("error: %s\n", strerror(errno));
+        printf("Error: %s\n", strerror(errno));
       }
 
       execvp(input[0], input);
@@ -117,7 +119,16 @@ int redirectin(char **input, int pos) { //"<"
   input[pos] = NULL;
 
   if (fork() == 0) {
+    dup(STDIN_FILENO);
     dup2(fd1, STDIN_FILENO);
+
+    if (execvp(input[0], input) == -1){
+      printf("%s\n", strerror(errno));
+    }
+    if(fd1 == -1){
+      printf("error: %s\n", strerror(errno));
+    }
+
     execvp(input[0], input);
     close(fd1);
   }

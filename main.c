@@ -58,6 +58,7 @@ int main(int argc, char *argv[]){
           chdir(com[1]);
         }
         else{
+          // printf("execute\n");
           execute(com);
         }
       }
