@@ -19,19 +19,6 @@ char ** parse_args(char *line){
     store[i] = strsep(&line, " ");
     i++;
   }
-  // char **new = malloc(256);
-  // int j = 0;
-  // int k = 0;
-  // int m = sizeof(store);
-  // while (j != i){
-  //   if (strcmp(store[j], " ") != 0){
-  //     new[k] = store[j];
-  //     k++;
-  //   }
-  //   j++;
-  // }
-  // printf("%s\n", new[2]);
-  // store = new;
   return store;
 }
 
@@ -67,9 +54,9 @@ char ** reading(){
   char *line = malloc(256);
   char cwd[1024];
   getcwd(cwd, sizeof(cwd));
-  if (errno){
-    printf("Error %d: %s\n", errno, strerror(errno));
-  }
+  // if (errno){
+  //   printf("Error! %d: %s\n", errno, strerror(errno));
+  // }
   printf("(dummy)%s$ ", cwd);
   fgets(line, 50, stdin);
   *(strchr(line, '\n')) = '\0'; //get rid of ending
@@ -84,12 +71,14 @@ int execute(char **args){
     p = wait(&status);
   }
   else{
-    execvp(args[0], args);
+    if (execvp(args[0], args) == -1){
+      printf("Error: %s\n", strerror(errno));
+    }
   }
   return 0;
 }
 
-void redirectout(char **input, int pos){
+int redirectout(char **input, int pos){
   int fd1 = creat(input[pos + 1], 0644);
   input[pos] = NULL;
   if (fork() == 0){
@@ -100,20 +89,30 @@ void redirectout(char **input, int pos){
   else{
     wait(NULL);
   }
+  return 1;
 }
 
-void redirectin(char **input, int pos) {
+int redirectin(char **input, int pos) {
   int fd1 = open(input[pos + 1], O_RDONLY);
   input[pos] = NULL;
-  int i = 0;
   if (fork() == 0) {
+    dup(STDIN_FILENO);
     dup2(fd1, STDIN_FILENO);
+
+    if (execvp(input[0], input) == -1){
+      printf("%s\n", strerror(errno));
+    }
+    if(fd1 == -1){
+      printf("error: %s\n", strerror(errno));
+    }
+
     execvp(input[0], input);
     close(fd1);
   }
   else {
     wait(NULL);
   }
+  return 1;
 }
 
 void piping(char **input, int pos) {

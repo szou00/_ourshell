@@ -17,6 +17,8 @@ Attempted:
       - Debugging the implementation for pipes
 
 Bugs:
+      - Running too many times may result in a segmentation fault due to memory overload
+      - Not sure if pipe works
 
 
 Files & Function Headers:
