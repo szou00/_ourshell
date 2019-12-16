@@ -78,28 +78,28 @@ int execute(char **args){
   return 0;
 }
 
-int redirectout(char **args, int pos){ //">"
+int redirectout(char **input, int pos){ //">"
 
-    char ** input;
-    int i = 0;
-    int k = 0;
-    int doubler = 0;
-    for (i = 0; args[i] != '\0'; i++) {
-      printf("loop\n");
-      input[i] = args[i];
-      if ((strcmp(args[i], ">") == 0 || strcmp(args[i], "<") == 0 || strcmp(args[i], "||") == 0) && i != k) {
-        doubler = 1;
-      }
-    }
-
-    if (doubler) {
-      char ** newInput;
-      for (; args[i] != '\0'; i++) {
-        input[k] = args[i];
-        k++;
-        printf("%s\n", input[k]);
-      }
-    }
+    // char ** input;
+    // int i = 0;
+    // int k = 0;
+    // int doubler = 0;
+    // for (i = 0; args[i] != '\0'; i++) {
+    //   printf("loop\n");
+    //   input[i] = args[i];
+    //   if ((strcmp(args[i], ">") == 0 || strcmp(args[i], "<") == 0 || strcmp(args[i], "||") == 0) && i != k) {
+    //     doubler = 1;
+    //   }
+    // }
+    //
+    // if (doubler) {
+    //   char ** newInput;
+    //   for (; args[i] != '\0'; i++) {
+    //     input[k] = args[i];
+    //     k++;
+    //     printf("%s\n", input[k]);
+    //   }
+    // }
 
     int fd1 = open(input[pos + 1], O_CREAT | O_WRONLY, 0644);
     input[pos] = NULL; //so the program won't say can't be found

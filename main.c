@@ -33,14 +33,12 @@ int main(int argc, char *argv[]){
           // printf("redirectout\n");
           if (redirectout(com, k)) {
             redirected = 1;
-            break;
           }
         }
         else if (strcmp(com[k], "<") == 0) {
           // printf("redirectin\n");
           if (redirectin(com, k)) {
             redirected = 1;
-            break;
           }
         }
         else if (strcmp(com[k], "|") == 0) {
@@ -51,7 +49,7 @@ int main(int argc, char *argv[]){
         }
         k++;
       }
-      if (k == m && !piped){
+      if (k == m && !piped && !redirected){
         // printf("k: %d m: %d\n", k, m);
         if (strcmp(com[0], "exit") == 0) {
           exit(0);
