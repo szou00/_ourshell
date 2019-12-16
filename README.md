@@ -19,48 +19,48 @@ These were the problems we had in our shell after continuous tries:
 1. Putting two ;; will cause a "Bad Address" that will follow through program
 2. Multiple redirection < > do not work and breaks the program
 
-## Function Headers
+## Files and Functions
 <b> fork.c </b>
--  `void initialize();`
-Initializes the shell and prints out a line to signal user is within shell
+  `void initialize();`
+- Initializes the shell and prints out a line to signal user is within shell
 
-- `char ** parse_args(char *line);`
-Input: The command written to the shell
-Output: An array that contains all the arguments of the command
+ `char ** parse_args(char *line);`
+- Input: The command written to the shell
+- Output: An array that contains all the arguments of the command
 
 Parses the array by white space
 
-- `char ** reading();`
-Input: None
-Output: An array that contains the parsed arguments
+  `char ** reading();`
+- Input: None
+- Output: An array that contains the parsed arguments
 
-Reads in the command line and executes the parse functions.
-Returns the result of that.
+- Reads in the command line and executes the parse functions.
+- Returns the result of that.
 
-- `void execute(char **args);`
-Input: An array of arguments
-Output: None
+ `void execute(char **args);`
+- Input: An array of arguments
+- Output: None
 
 Runs the commands in the shell
 
-- `char ** parse_semi(char *line);`
-Input: The command written to the shell
-Output: An array that contains all the arguments of the command
+ `char ** parse_semi(char *line);`
+- Input: The command written to the shell
+- Output: An array that contains all the arguments of the command
 
 Similar to parse_args, but this function is specifically for moments when there are semicolons within the command
 
-- `int redirectout(char **input, int pos);`
-Input: An array of commands, and an integer
-Output: 1
+ `int redirectout(char **input, int pos);`
+- Input: An array of commands, and an integer
+- Output: 1
 
-Implements redirect stdout
+- Implements redirect stdout
 
-- `int redirectin(char **input, int pos);`
-Input: An array of commands, and an integer
-Output: 1
+ `int redirectin(char **input, int pos);`
+- Input: An array of commands, and an integer
+- Output: 1
 
-Implements redirect stdin
+- Implements redirect stdin
 
-- `void piping(char **input, int pos);`
-Input: An array of commands, and an integer
-Implements simple pipes
+ `void piping(char **input, int pos);`
+- Input: An array of commands, and an integer
+- Implements simple pipes
