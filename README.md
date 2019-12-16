@@ -21,6 +21,7 @@ These were the problems we had in our shell after continuous tries:
 
 ## Files and Functions
 <b> fork.c </b>
+<br/>
   `void initialize();`
 - Initializes the shell and prints out a line to signal user is within shell
 
@@ -64,3 +65,9 @@ Similar to parse_args, but this function is specifically for moments when there 
  `void piping(char **input, int pos);`
 - Input: An array of commands, and an integer
 - Implements simple pipes
+
+<b> main.c </b>
+- Runs the code; decides whether or not the command uses redirect or pipe
+
+<b> funcheaders.h </b>
+- Contains the function headers
