@@ -34,10 +34,11 @@ int main(int argc, char *argv[]){
           redirectin(com, k);
           break;
         }
+        else if (strcmp(com[k], "|") == 0) {
+          // printf("pipe arguments: %s\n", com[k]);
+          piping(com, k);
+        }
         k++;
-          // else if (strcmp(com[k], "|") == 0) {
-          //   piping(com, k);
-          // }
       }
       if (k == m){
         if (strcmp(com[0], "exit") == 0) {
