@@ -67,14 +67,10 @@ char ** reading(){
 int execute(char **args){
   int f, p, status;
   f = fork();
-
   if (f){
-    // wait(NULL);
     p = wait(&status);
-    // printf("---waited\n");
   }
   else{
-    // printf("---execing\n");
     if (execvp(args[0], args) == -1){
       printf("%s\n", strerror(errno));
     }
@@ -117,11 +113,9 @@ int redirectout(char **input, int pos){ //">"
   return 1;
 }
 
-int redirectin(char **input, int pos) { //"<"
-
+int redirectin(char **input, int pos) {
   int fd1 = open(input[pos + 1], O_RDONLY);
   input[pos] = NULL;
-
   if (fork() == 0) {
     dup(STDIN_FILENO);
     dup2(fd1, STDIN_FILENO);
@@ -139,7 +133,7 @@ int redirectin(char **input, int pos) { //"<"
   else {
     wait(NULL);
   }
-return 1;
+  return 1;
 }
 
 void piping(char **input, int pos) {
