@@ -12,11 +12,11 @@ Features:
 
 ## Attempted Implementation
 These were the problems we had in our shell after continuous tries:
-1. Redirecting stdout prints out the output intended for the file
-2. Multiple redirection
+1. Multiple redirection
+2. Implementation of cd ~
 
 ## Bugs
-1. Could not get certain errors to display without the error continuously popping up throughout the program
+1. Could not get certain errors to display without the error continuously popping up throughout the program (so in order for program to run we commented out those errnos)
 2. Multiple redirection < > does not work and breaks the program
 
 ## Files and Functions
