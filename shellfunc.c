@@ -54,9 +54,9 @@ char ** reading(){
   char *line = malloc(256);
   char cwd[1024];
   getcwd(cwd, sizeof(cwd));
-  // if (errno){
-  //   printf("Error! %d: %s\n", errno, strerror(errno));
-  // }
+  if (errno){
+    printf("Error %d: %s\n", errno, strerror(errno));
+  }
   printf("(dummy)%s$ ", cwd);
   fgets(line, 50, stdin);
   *(strchr(line, '\n')) = '\0'; //get rid of ending
@@ -76,7 +76,7 @@ int execute(char **args){
   else{
     // printf("---execing\n");
     if (execvp(args[0], args) == -1){
-      printf("Error: %s\n", strerror(errno));
+      printf("%s\n", strerror(errno));
     }
   }
   return 0;
@@ -86,8 +86,12 @@ int redirectout(char **input, int pos){ //">"
 
     // char ** input;
     // int i = 0;
-    // for (i; arg[i] != '\0'; i++) {
-    //   input
+    // for (i = 0; args[i] != '\0'; i++) {
+    //   input[i] = args[i];
+    //   if (strcmp(args[i], ">") == 0 || strcmp(args[i], "<") == 0 || strcmp(args[i], "||") == 0) {
+    //     char ** newInput;
+    //     input = newInput;
+    //   }
     // }
 
     int fd1 = open(input[pos + 1], O_CREAT | O_WRONLY, 0644);

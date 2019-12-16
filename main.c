@@ -21,7 +21,7 @@ int main(int argc, char *argv[]){
       char **com = parse_args(commands[i]);
       int k = 0;
       int m = 0;
-      int redirected = 0;
+      // int redirected = 0;
       while(com[m] != 0){
         m++;
       }
@@ -31,14 +31,14 @@ int main(int argc, char *argv[]){
           if (strcmp(com[k], ">") == 0) {
             // printf("redirectout\n");
               if (redirectout(com, k)) {
-                redirected = 1;
+                // redirected = 1;
                 break;
               }
           }
           else if (strcmp(com[k], "<") == 0) {
             // printf("redirectin\n");
             if (redirectin(com, k)) {
-              redirected = 1;
+              // redirected = 1;
               break;
             }
           }
@@ -49,7 +49,7 @@ int main(int argc, char *argv[]){
           }
           k++;
       }
-      if (k == m && !redirected){
+      if (k == m /*&& !redirected*/){
         // printf("k: %d m: %d\n", k, m);
         if (strcmp(com[0], "exit") == 0) {
           exit(0);
