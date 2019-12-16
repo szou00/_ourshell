@@ -22,6 +22,7 @@ int main(int argc, char *argv[]){
       int k = 0;
       int m = 0;
       int redirected = 0;
+      int piped = 0;
       while(com[m] != 0){
         m++;
       }
@@ -44,12 +45,13 @@ int main(int argc, char *argv[]){
         }
         else if (strcmp(com[k], "|") == 0) {
           // printf("pipe arguments: %s\n", com[k]);
+          piped = 1;
           piping(com, k);
           // break;
         }
         k++;
       }
-      if (k == m /*&& !redirected*/){
+      if (k == m && !piped){
         // printf("k: %d m: %d\n", k, m);
         if (strcmp(com[0], "exit") == 0) {
           exit(0);
