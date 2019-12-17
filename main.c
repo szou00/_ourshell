@@ -19,6 +19,7 @@ int main(int argc, char *argv[]){
     int i = 0;
     while (commands[i]){
       char **com = parse_args(commands[i]);
+      // printf("redirecting: %d\n", count_redirection(com));
       int k = 0;
       int m = 0;
       int redirected = 0;
@@ -28,24 +29,26 @@ int main(int argc, char *argv[]){
       }
       m--;
       while (k != m){
-        // printf("argument: %s\n", com[k]);
         if (strcmp(com[k], ">") == 0) {
-          // printf("redirectout\n");
           if (redirectout(com, k)) {
             redirected = 1;
           }
         }
         else if (strcmp(com[k], "<") == 0) {
-          // printf("redirectin\n");
+          // printf("is <\n");
+          // if (count_redirection(com) == 2) {
+          //   printf("double redirecting\n");
+          //   double_redirecting(com, k);
+          //   break;
+          // }
           if (redirectin(com, k)) {
             redirected = 1;
+            break;
           }
         }
         else if (strcmp(com[k], "|") == 0) {
-          // printf("pipe arguments: %s\n", com[k]);
           piped = 1;
           piping(com, k);
-          // break;
         }
         k++;
       }

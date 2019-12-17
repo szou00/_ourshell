@@ -78,30 +78,37 @@ int execute(char **args){
   return 0;
 }
 
+int count_redirection(char **args) {
+  int i = 0;
+  int r = 0;
+  // printf("INIT COUNT");
+  // printf("%sm\n", args[i]);
+  while(args[i]) {
+    // printf("rep %d\n", i);
+    if ((strcmp(args[i], ">") == 0 || strcmp(args[i], "<") == 0)) {
+      r++;
+      // printf("rep %d\n", r);
+    }
+    i++;
+  }
+  return r;
+}
+//
+// int ** find_redirect_indexes(char ** args) {
+//   int n = 0;
+//   int ** indexes;
+//   for (i = 0; args[i] != '\0'; i++) {
+//     if ((strcmp(args[i], ">") == 0 || strcmp(args[i], "<") == 0 || strcmp(args[i], "||") == 0)) {
+//       indexes[n] = 0;
+//
+//     }
+//   }
+// }
+
+
 int redirectout(char **input, int pos){ //">"
 
-    // char ** input;
-    // int i = 0;
-    // int k = 0;
-    // int doubler = 0;
-    // for (i = 0; args[i] != '\0'; i++) {
-    //   printf("loop\n");
-    //   input[i] = args[i];
-    //   if ((strcmp(args[i], ">") == 0 || strcmp(args[i], "<") == 0 || strcmp(args[i], "||") == 0) && i != k) {
-    //     doubler = 1;
-    //   }
-    // }
-    //
-    // if (doubler) {
-    //   char ** newInput;
-    //   for (; args[i] != '\0'; i++) {
-    //     input[k] = args[i];
-    //     k++;
-    //     printf("%s\n", input[k]);
-    //   }
-    // }
-
-    int fd1 = open(input[pos + 1], O_CREAT | O_WRONLY, 0644);
+    int fd1 = creat(input[pos + 1], 0644);
     input[pos] = NULL; //so the program won't say can't be found
     if (fork() == 0) {
       dup(STDOUT_FILENO);
@@ -114,14 +121,14 @@ int redirectout(char **input, int pos){ //">"
         printf("Error: %s\n", strerror(errno));
       }
 
-      execvp(input[0], input);
+      // execvp(input[0], input);
       close(fd1);
 
     }
     else {
       wait(NULL);
     }
-  return 1;
+    return 1;
 }
 
 int redirectin(char **input, int pos) {
@@ -138,7 +145,7 @@ int redirectin(char **input, int pos) {
       printf("error: %s\n", strerror(errno));
     }
 
-    execvp(input[0], input);
+    // execvp(input[0], input);
     close(fd1);
   }
   else {
@@ -146,6 +153,49 @@ int redirectin(char **input, int pos) {
   }
   return 1;
 }
+
+// int double_redirecting(char **args, int pos) {
+//   int i = 0;
+//   int m = 0;
+//   char ** subs = malloc(256);
+//   int not_subbed = 1;
+//
+//   while (args[i] && not_subbed) {
+//       printf("while\n");
+//       if (strcmp(args[i], "<") == 0) {
+//         printf("index: %d\n", i);
+//         int n = 0;
+//         int x = pos+1;
+//         printf("x: %d\n", x);
+//         printf("args[x]: %s\n", args[x]);
+//         for (x = pos+1; args[x] != NULL; x++) {
+//           printf("in loop\n");
+//           subs[n] = args[x];
+//           printf("ARGS[X]: %s\n", args[x]);
+//           printf("SUBS[n]: %s\n", subs[n]);
+//           if (strcmp(subs[n], ">") == 0) {
+//             m = n;
+//           }
+//           n++;
+//         }
+//         printf("breaking\n");
+//         // break;
+//         not_subbed = 0;
+//       }
+//       i++;
+//       printf("hello\n");
+//   }
+//   printf("hello????????");
+//
+//   redirectin(args, pos);
+//   printf("hello 2");
+//
+//   redirectout(subs, m);
+//   printf("hello 3");
+//
+//   return 0;
+//
+// }
 
 void piping(char **input, int pos) {
 
