@@ -26,41 +26,41 @@ These were the problems we had in our shell after continuous tries:
 ## Files and Functions
 <b> fork.c </b>
 
-   `void initialize();`
+`void initialize();`
 - inputs: nothing
 - returns: nothing
 - prints a message to let the user know that he/she has entered the shell
 
-   `char ** parse_args(char *line);`
+`char ** parse_args(char *line);`
 - inputs: `char *line`
 - returns: a pointer to a array of different parts of one command
 - Parses the array by white space
 
-   `void execute(char **args);`
+`void execute(char **args);`
 - input: `char ** args`
 - returns: nothing
 - forks and executes commands
 
-   `char ** reading();`
+`char ** reading();`
 - Input: None
 - returns: the command line and parses by semicolon if necessary
 
-   `char ** parse_semi(char *line);`
+`char ** parse_semi(char *line);`
 - inputs: `char *line`
 - returns: a pointer to an array of different commands separated my semicolons
 - Similar to parse_args, but this function is specifically for moments when there are semicolons within the command
 
-   `int redirectout(char **input, int pos);`
+`int redirectout(char **input, int pos);`
 - inputs: `char **input`, `int pos`
 - returns: nothing
 - redirects the command from input
 
-   `int redirectin(char **input, int pos);`
+`int redirectin(char **input, int pos);`
 - inputs: `char **input`, `int pos`
 - returns: nothing
 - redirects the command from input
 
-   `void piping(char **input, int pos);`
+`void piping(char **input, int pos);`
 - inputs: `char **input`, `int pos`
 - returns: nothing
 - Implements simple pipes
