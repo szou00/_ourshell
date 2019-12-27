@@ -13,17 +13,15 @@ by William Lin and Sharon Zou
 
 ## Attempted Implementation
 These were the problems we had in our shell after continuous tries:
-1. Redirecting stdout prints out the output intended for the file
-2. Pipe also prints out the output intended for the file
-3. Multiple redirection in one command (Commented out, could not get this to work)
-4. Running commands with more than one space within a command
+1. Multiple redirection in one command doesn't work (Commented out, could not get this to work)
+2. Running commands with more than one space within a command
 
 ## Bugs
 1. Could not get certain errors to display without the error continuously popping up throughout the program (we commented out the code for errors instead)
 2. Multiple redirection < > does not work and breaks the program
 3. Typing in something like "hello > one.txt" will cause the program to wait for input instead of printing an error
 4. Running too many times may result in a segmentation fault due to memory overload
-5. Not sure if pipe works
+5. Not sure if pipe works for more complicated commands
 
 ## Files and Functions
 <b> fork.c </b>
@@ -94,12 +92,13 @@ These were the problems we had in our shell after continuous tries:
     - inputs: `char **input`, `int pos`
 
     - returns: nothing
-    g
+
     - Implements simple pipes
-   `===============================================`
+   `==========================================g=====`
 
 <b> main.c </b>
 - Runs the code; decides whether or not the command uses redirect or pipe
 <br/>
 <b> funcheaders.h </b>
+- Contains the function headers
 <br/>
