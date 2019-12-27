@@ -67,7 +67,7 @@ These were the problems we had in our shell after continuous tries:
 
 <b> main.c </b>
 - Runs the code; decides whether or not the command uses redirect or pipe
-<br/>
+
 <b> funcheaders.h </b>
 - Contains the function headers
 <br/>
